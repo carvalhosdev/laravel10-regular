@@ -1,6 +1,9 @@
 <?php
-
 namespace App\Providers;
+
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -21,6 +24,11 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject('Bem vindo ao Benaus')
+                ->line('Clique no link abaixo para ativar sua conta.')
+                ->action('Verify Email Address', $url);
+        });
     }
 }
